@@ -1,28 +1,63 @@
 package model;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
+/**
+ * Represents a customer order.
+ * Contains order items as LineItem objects with proper type safety.
+ */
 public class Order {
     private int orderId;
     private int customerId;
     private Date orderDate;
     private String shippingAddress;
-    private double totalAmount;
+    private BigDecimal totalAmount;
     private OrderStatus status;
-    private List<Map.Entry<Book, Integer>> items;
+    private List<LineItem> items;
     private Payment payment;
     
     public Order() {
         this.orderDate = new Date();
+        this.items = new ArrayList<>();
+        this.totalAmount = BigDecimal.ZERO;
     }
     
-    // Methods from your diagram
-    public void updateStatus(OrderStatus status) {
-        this.status = status;
+    /**
+     * Add a line item to this order.
+     */
+    public void addLineItem(LineItem item) {
+        if (item != null) {
+            items.add(item);
+            recalculateTotal();
+        }
     }
     
+    /**
+     * Recalculate total amount based on line items.
+     */
+    private void recalculateTotal() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (LineItem item : items) {
+            total = total.add(item.getTotalPrice());
+        }
+        this.totalAmount = total;
+    }
+    
+    /**
+     * Update order status with validation.
+     */
+    public void updateStatus(OrderStatus newStatus) {
+        if (newStatus != null) {
+            this.status = newStatus;
+        }
+    }
+    
+    /**
+     * Cancel order if it's in PENDING or PROCESSING state.
+     */
     public boolean cancelOrder() {
         if (status == OrderStatus.PENDING || status == OrderStatus.PROCESSING) {
             this.status = OrderStatus.CANCELLED;
@@ -44,15 +79,29 @@ public class Order {
     public String getShippingAddress() { return shippingAddress; }
     public void setShippingAddress(String shippingAddress) { this.shippingAddress = shippingAddress; }
     
-    public double getTotalAmount() { return totalAmount; }
-    public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
+    public BigDecimal getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
     
     public OrderStatus getStatus() { return status; }
     public void setStatus(OrderStatus status) { this.status = status; }
     
-    public List<Map.Entry<Book, Integer>> getItems() { return items; }
-    public void setItems(List<Map.Entry<Book, Integer>> items) { this.items = items; }
+    public List<LineItem> getItems() { return items; }
+    public void setItems(List<LineItem> items) { 
+        this.items = items != null ? items : new ArrayList<>();
+        recalculateTotal();
+    }
     
     public Payment getPayment() { return payment; }
     public void setPayment(Payment payment) { this.payment = payment; }
+    
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", customerId=" + customerId +
+                ", totalAmount=" + totalAmount +
+                ", status=" + status +
+                ", itemCount=" + items.size() +
+                '}';
+    }
 }

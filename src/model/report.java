@@ -3,14 +3,17 @@ package model;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * Represents a system report.
+ * Can be generated with various formats and data types.
+ */
 public class Report {
     private int reportId;
-    private String type; // "SALES", "INVENTORY", "CUSTOMER", etc.
+    private String type;
     private Date generatedDate;
     private Map<String, Object> data;
-    private String format; // "PDF", "EXCEL", "CSV"
+    private String format;
     
-    // Getters and Setters
     public int getReportId() { return reportId; }
     public void setReportId(int reportId) { this.reportId = reportId; }
     

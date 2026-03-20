@@ -1,9 +1,14 @@
 package model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Shopping cart for customers.
+ * Uses BigDecimal for monetary calculations to avoid precision issues.
+ */
 public class Cart {
     private int cartId;
     private int customerId;
@@ -15,15 +20,30 @@ public class Cart {
         this.creationDate = new Date();
     }
     
+    /**
+     * Add an item to the cart.
+     */
     public void addItem(Book book, int quantity) {
-        items.put(book, items.getOrDefault(book, 0) + quantity);
+        if (book != null && quantity > 0) {
+            items.put(book, items.getOrDefault(book, 0) + quantity);
+        }
     }
     
+    /**
+     * Remove an item from the cart.
+     */
     public void removeItem(Book book) {
-        items.remove(book);
+        if (book != null) {
+            items.remove(book);
+        }
     }
     
+    /**
+     * Update quantity of an item in cart.
+     */
     public void updateQuantity(Book book, int quantity) {
+        if (book == null) return;
+        
         if (quantity <= 0) {
             removeItem(book);
         } else {
@@ -31,10 +51,18 @@ public class Cart {
         }
     }
     
-    public double getTotal() {
-        double total = 0;
+    /**
+     * Get the total price of all items in cart with precise decimal handling.
+     */
+    public BigDecimal getTotal() {
+        BigDecimal total = BigDecimal.ZERO;
         for (Map.Entry<Book, Integer> entry : items.entrySet()) {
-            total += entry.getKey().getPrice() * entry.getValue();
+            Book book = entry.getKey();
+            int quantity = entry.getValue();
+            BigDecimal price = book.getPrice();
+            if (price != null) {
+                total = total.add(price.multiply(new BigDecimal(quantity)));
+            }
         }
         return total;
     }
@@ -51,7 +79,6 @@ public class Cart {
         items.clear();
     }
     
-    // Getters and Setters
     public int getCartId() { return cartId; }
     public void setCartId(int cartId) { this.cartId = cartId; }
     

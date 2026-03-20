@@ -1,7 +1,12 @@
 package model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * Represents a book in the system.
+ * Uses BigDecimal for price to avoid floating-point precision issues.
+ */
 public class Book {
     private int bookId;
     private String isbn;
@@ -9,7 +14,7 @@ public class Book {
     private String author;
     private String publisher;
     private Date publicationDate;
-    private double price;
+    private BigDecimal price;
     private int stockLevel;
     private String category;
     private String description;
@@ -17,10 +22,9 @@ public class Book {
     private int reviewCount;
     private String imageUrl;
     
-    // Constructors
     public Book() {}
     
-    public Book(int bookId, String title, String author, double price, 
+    public Book(int bookId, String title, String author, BigDecimal price, 
                 String category, double rating, int reviewCount) {
         this.bookId = bookId;
         this.title = title;
@@ -31,15 +35,27 @@ public class Book {
         this.reviewCount = reviewCount;
     }
     
-    // Business methods from your diagram
-    public void updatePrice(double newPrice) {
-        this.price = newPrice;
+    /**
+     * Update the book price with validation.
+     */
+    public void updatePrice(BigDecimal newPrice) {
+        if (newPrice != null && newPrice.compareTo(BigDecimal.ZERO) > 0) {
+            this.price = newPrice;
+        }
     }
     
+    /**
+     * Update stock quantity with validation.
+     */
     public void updateStockQuantity(int quantity) {
-        this.stockLevel = quantity;
+        if (quantity >= 0) {
+            this.stockLevel = quantity;
+        }
     }
     
+    /**
+     * Check if book is in stock.
+     */
     public boolean isInStock() {
         return stockLevel > 0;
     }
@@ -63,8 +79,8 @@ public class Book {
     public Date getPublicationDate() { return publicationDate; }
     public void setPublicationDate(Date publicationDate) { this.publicationDate = publicationDate; }
     
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
     
     public int getStockLevel() { return stockLevel; }
     public void setStockLevel(int stockLevel) { this.stockLevel = stockLevel; }
@@ -83,4 +99,15 @@ public class Book {
     
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    
+    @Override
+    public String toString() {
+        return "Book{" +
+                "bookId=" + bookId +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", price=" + price +
+                ", inStock=" + isInStock() +
+                '}';
+    }
 }

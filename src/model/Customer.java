@@ -3,6 +3,9 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Customer user who can browse books, add to cart, and place orders.
+ */
 public class Customer extends User {
     private int loyaltyPoints;
     private String defaultShippingAddress;
@@ -12,33 +15,56 @@ public class Customer extends User {
     public Customer() {
         this.orderHistory = new ArrayList<>();
         this.cart = new Cart();
-        this.role = "CUSTOMER";
+        this.role = Role.CUSTOMER;
     }
     
-    // Methods from your diagram
+    /**
+     * Get order history for this customer.
+     */
     public List<Order> viewOrderHistory() {
-        return orderHistory;
+        return new ArrayList<>(orderHistory);
     }
     
+    /**
+     * Add a book to the shopping cart.
+     */
     public void addToCart(Book book, int quantity) {
-        cart.addItem(book, quantity);
+        if (book != null && quantity > 0) {
+            cart.addItem(book, quantity);
+        }
     }
     
+    /**
+     * Place an order from the current cart.
+     */
     public Order placeOrder() {
+        if (cart.getItems().isEmpty()) {
+            return null;
+        }
+        
         Order order = new Order();
         order.setCustomerId(this.userId);
-        order.setItems(new ArrayList<>(cart.getItems().entrySet()));
-        order.setTotalAmount(cart.getTotal());
         order.setShippingAddress(this.defaultShippingAddress);
         order.setStatus(OrderStatus.PENDING);
         
-        // Clear cart after order
-        cart.clear();
+        // Convert cart items to line items
+        for (var entry : cart.getItems().entrySet()) {
+            Book book = entry.getKey();
+            int quantity = entry.getValue();
+            LineItem lineItem = new LineItem(
+                book.getBookId(),
+                book.getTitle(),
+                book.getAuthor(),
+                book.getPrice(),
+                quantity
+            );
+            order.addLineItem(lineItem);
+        }
         
+        cart.clear();
         return order;
     }
     
-    // Getters and Setters
     public int getLoyaltyPoints() { return loyaltyPoints; }
     public void setLoyaltyPoints(int loyaltyPoints) { this.loyaltyPoints = loyaltyPoints; }
     
@@ -49,4 +75,13 @@ public class Customer extends User {
     
     public Cart getCart() { return cart; }
     public void setCart(Cart cart) { this.cart = cart; }
+    
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "email='" + email + '\'' +
+                ", loyaltyPoints=" + loyaltyPoints +
+                ", cartSize=" + cart.getItems().size() +
+                '}';
+    }
 }

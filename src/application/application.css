@@ -1,1 +1,176 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+/* Global Root Variables */
+.root {
+    -fx-base-background: #fcfbf7;
+    -fx-background-color: -fx-base-background;
+    -fx-primary-text: #4a3b32;
+    -fx-secondary-text: #7f8c8d;
+    -fx-accent-rust: #8d4034;
+    -fx-accent-terracotta: #e07a5f;
+    -fx-accent-beige: #f5f0e6;
+    -fx-accent-green: #386641;
+    -fx-font-serif: "Georgia";
+    -fx-font-sans: "Arial";
+}
+
+/* Typography */
+.label, .text {
+    -fx-text-fill: -fx-primary-text;
+    -fx-font-family: -fx-font-sans;
+}
+
+.h1 {
+    -fx-font-family: -fx-font-serif;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.h2 {
+    -fx-font-family: -fx-font-serif;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.subtitle {
+    -fx-text-fill: -fx-secondary-text;
+    -fx-font-size: 14px;
+}
+
+/* Buttons */
+.button {
+    -fx-background-radius: 5px;
+    -fx-padding: 8px 16px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.primary-button {
+    -fx-background-color: -fx-accent-rust;
+    -fx-text-fill: white;
+}
+.primary-button:hover {
+    -fx-background-color: derive(-fx-accent-rust, 10%);
+}
+
+.secondary-button {
+    -fx-background-color: -fx-accent-terracotta;
+    -fx-text-fill: white;
+}
+.secondary-button:hover {
+    -fx-background-color: derive(-fx-accent-terracotta, 10%);
+}
+
+.social-button {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5px;
+    -fx-text-fill: -fx-primary-text;
+}
+.social-button:hover {
+    -fx-background-color: #f9f9f9;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primary-text;
+    -fx-font-size: 14px;
+}
+.nav-button:hover {
+    -fx-background-color: -fx-accent-beige;
+    -fx-background-radius: 20px;
+}
+
+.pill-button {
+    -fx-background-color: -fx-accent-beige;
+    -fx-background-radius: 20px;
+    -fx-text-fill: -fx-accent-rust;
+}
+
+/* Text Fields & Inputs */
+.text-field {
+    -fx-background-color: -fx-accent-beige;
+    -fx-background-radius: 5px;
+    -fx-border-color: transparent;
+    -fx-padding: 10px;
+    -fx-prompt-text-fill: #999;
+}
+.text-field:focused {
+    -fx-border-color: -fx-accent-terracotta;
+    -fx-background-color: white;
+}
+
+.spinner {
+    -fx-background-color: -fx-accent-beige;
+    -fx-background-radius: 5px;
+}
+.spinner .text-field {
+    -fx-background-color: transparent;
+}
+
+/* Cards */
+.card, .login-card, .book-card, .cart-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 4);
+}
+
+.login-card {
+    -fx-padding: 40px;
+    -fx-alignment: center;
+}
+
+.cart-card {
+    -fx-padding: 20px;
+}
+
+/* Specific Components */
+.nav-bar {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #eee transparent;
+    -fx-padding: 10px 20px;
+}
+
+.category-tag {
+    -fx-background-color: -fx-accent-beige;
+    -fx-text-fill: -fx-accent-rust;
+    -fx-background-radius: 15px;
+    -fx-padding: 2px 8px;
+    -fx-font-size: 11px;
+}
+
+.price-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary-text;
+    -fx-font-family: -fx-font-serif;
+}
+
+.rating-label {
+    -fx-text-fill: #f1c40f; /* Gold */
+    -fx-font-size: 12px;
+}
+
+.scroll-pane {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+}
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.cart-item-row {
+    -fx-border-color: transparent transparent #f5f0e6 transparent;
+    -fx-border-width: 1px;
+    -fx-padding: 15px 0;
+}
+
+.summary-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: -fx-primary-text;
+}
+
+.total-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-accent-rust;
+    -fx-font-family: -fx-font-serif;
+}

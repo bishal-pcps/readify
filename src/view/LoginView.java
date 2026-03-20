@@ -1,112 +1,152 @@
 package view;
 
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import controller.AuthController;
-import javax.swing.*;
-import java.awt.*;
 
-public class LoginView extends JFrame {
+public class LoginView {
     private AuthController authController;
-    private JTextField emailField;
-    private JPasswordField passwordField;
-    private JCheckBox rememberMeCheck;
-    private JButton signInButton;
-    private JButton googleButton;
-    private JButton githubButton;
     
     public LoginView() {
         this.authController = new AuthController();
-        authController.setLoginView(this);
-        initComponents();
     }
     
-    private void initComponents() {
-        setTitle("Readify - Sign In");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 500);
-        setLocationRelativeTo(null);
+    public void start(Stage stage) {
+        stage.setTitle("Readify - Sign In");
         
-        // Main panel
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
+        // Main container
+        StackPane root = new StackPane();
+        root.getStyleClass().add("root");
         
-        // Welcome label
-        JLabel welcomeLabel = new JLabel("Welcome to Readify");
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Background decorative circles
+        Circle c1 = new Circle(150);
+        c1.setFill(javafx.scene.paint.Color.web("#f2e8cf"));
+        c1.setTranslateX(-400);
+        c1.setTranslateY(-200);
         
-        JLabel subtitleLabel = new JLabel("Sign in to continue your literary journey");
-        subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-        subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Circle c2 = new Circle(250);
+        c2.setFill(javafx.scene.paint.Color.web("#f5f0e6"));
+        c2.setTranslateX(400);
+        c2.setTranslateY(200);
         
-        // Email field
-        JLabel emailLabel = new JLabel("Email Address");
-        emailLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        emailField = new JTextField(20);
-        emailField.setText("you@example.com");
+        root.getChildren().addAll(c1, c2);
         
-        // Password field
-        JLabel passwordLabel = new JLabel("Password");
-        passwordLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        passwordField = new JPasswordField(20);
-        passwordField.setText("password");
+        // Content Container
+        VBox contentBox = new VBox(20);
+        contentBox.setAlignment(Pos.CENTER);
         
-        // Remember me and forgot password
-        JPanel optionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        rememberMeCheck = new JCheckBox("Remember me");
-        JLabel forgotPassword = new JLabel("Forgot password?");
-        forgotPassword.setForeground(Color.BLUE);
-        forgotPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        optionsPanel.add(rememberMeCheck);
-        optionsPanel.add(forgotPassword);
+        // Logo Section
+        VBox logoBox = new VBox(10);
+        logoBox.setAlignment(Pos.CENTER);
         
-        // Sign In button
-        signInButton = new JButton("Sign In");
-        signInButton.setBackground(new Color(70, 130, 180));
-        signInButton.setForeground(Color.WHITE);
-        signInButton.setFont(new Font("Arial", Font.BOLD, 14));
-        signInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Label iconLabel = new Label("\uD83D\uDCD6"); // Book Emoji
+        iconLabel.setStyle("-fx-font-size: 40px; -fx-text-fill: #8d4034; -fx-background-color: white; -fx-background-radius: 10px; -fx-padding: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
         
-        // Social login
-        JLabel orLabel = new JLabel("Or continue with");
-        orLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Label titleLabel = new Label("Welcome to Readify");
+        titleLabel.getStyleClass().add("h1");
         
-        JPanel socialPanel = new JPanel(new FlowLayout());
-        googleButton = new JButton("G Google");
-        githubButton = new JButton("GitHub");
-        socialPanel.add(googleButton);
-        socialPanel.add(githubButton);
+        Label subtitleLabel = new Label("Sign in to continue your literary journey");
+        subtitleLabel.getStyleClass().add("subtitle");
         
-        // Add action listeners
-        signInButton.addActionListener(e -> {
+        logoBox.getChildren().addAll(iconLabel, titleLabel, subtitleLabel);
+        
+        // Login Card
+        VBox card = new VBox(20);
+        card.getStyleClass().add("login-card");
+        card.setMaxWidth(400);
+        
+        // Form
+        GridPane formGrid = new GridPane();
+        formGrid.setVgap(15);
+        formGrid.setHgap(10);
+        formGrid.setAlignment(Pos.CENTER);
+        
+        // Email
+        Label emailLabel = new Label("Email Address");
+        emailLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
+        TextField emailField = new TextField();
+        emailField.setPromptText("you@example.com");
+        emailField.getStyleClass().add("text-field");
+        
+        // Password
+        Label passwordLabel = new Label("Password");
+        passwordLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPromptText("Enter your password");
+        passwordField.getStyleClass().add("text-field");
+        
+        // Options
+        HBox optionsBox = new HBox();
+        CheckBox rememberMeCheck = new CheckBox("Remember me");
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        Hyperlink forgotPasswordLink = new Hyperlink("Forgot password?");
+        forgotPasswordLink.setStyle("-fx-text-fill: #8d4034;");
+        optionsBox.getChildren().addAll(rememberMeCheck, spacer, forgotPasswordLink);
+        
+        // Sign In Button
+        Button signInButton = new Button("Sign In");
+        signInButton.getStyleClass().add("button");
+        signInButton.getStyleClass().add("primary-button");
+        signInButton.setMaxWidth(Double.MAX_VALUE);
+        signInButton.setPrefHeight(45);
+        
+        // Social Login
+        Label orLabel = new Label("Or continue with");
+        orLabel.setStyle("-fx-text-fill: #999; -fx-font-size: 12px;");
+        
+        HBox socialBox = new HBox(15);
+        socialBox.setAlignment(Pos.CENTER);
+        
+        Button googleButton = new Button("G  Google");
+        googleButton.getStyleClass().addAll("button", "social-button");
+        googleButton.setPrefWidth(150);
+        
+        Button githubButton = new Button("GitHub"); // Github icon omitted for simplicity
+        githubButton.getStyleClass().addAll("button", "social-button");
+        githubButton.setPrefWidth(150);
+        
+        socialBox.getChildren().addAll(googleButton, githubButton);
+        
+        // Add to card
+        card.getChildren().addAll(
+            emailLabel, emailField, 
+            passwordLabel, passwordField, 
+            optionsBox, 
+            signInButton,
+            new Separator(),
+            orLabel,
+            socialBox
+        );
+        
+        contentBox.getChildren().addAll(logoBox, card);
+        root.getChildren().add(contentBox);
+        
+        // Action
+        signInButton.setOnAction(e -> {
             String email = emailField.getText();
-            String password = new String(passwordField.getPassword());
-            authController.login(email, password);
+            String password = passwordField.getText();
+            
+            boolean success = authController.login(email, password, stage);
+            
+            if (!success) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Login Failed");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid email or password");
+                alert.showAndWait();
+            }
         });
         
-        // Add components
-        mainPanel.add(welcomeLabel);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        mainPanel.add(subtitleLabel);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 30)));
-        mainPanel.add(emailLabel);
-        mainPanel.add(emailField);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-        mainPanel.add(passwordLabel);
-        mainPanel.add(passwordField);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        mainPanel.add(optionsPanel);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        mainPanel.add(signInButton);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        mainPanel.add(orLabel);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        mainPanel.add(socialPanel);
-        
-        add(mainPanel);
-    }
-    
-    public void showError(String message) {
-        JOptionPane.showMessageDialog(this, message, "Login Failed", JOptionPane.ERROR_MESSAGE);
+        Scene scene = new Scene(root, 1000, 700);
+        scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
+        stage.setScene(scene);
+        stage.show();
     }
 }

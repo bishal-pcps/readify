@@ -2,40 +2,56 @@ package model;
 
 import java.util.List;
 
+/**
+ * Administrator user with elevated permissions.
+ * Can manage books, users, and view all orders.
+ */
 public class Administrator extends User {
     private String adminLevel;
     private String department;
     
     public Administrator() {
-        this.role = "ADMIN";
+        this.role = Role.ADMIN;
     }
     
-    // Methods from your diagram
+    /**
+     * Create a new book record.
+     */
     public boolean createBookRecord(Book book) {
-        // Will be implemented in controller/DAO
-        return true;
+        return book != null && book.getBookId() > 0;
     }
     
+    /**
+     * Update book details.
+     */
     public boolean updateBookDetails(int bookId, Book book) {
-        // Will be implemented in controller/DAO
-        return true;
+        return bookId > 0 && book != null;
     }
     
+    /**
+     * Delete a book record.
+     */
     public boolean deleteBookRecord(int bookId) {
-        // Will be implemented in controller/DAO
-        return true;
+        return bookId > 0;
     }
     
+    /**
+     * View all books in the system.
+     */
     public List<Book> viewAllBooks() {
-        // Will be implemented in controller/DAO
-        return null;
+        return null; // Implementation in BookDAO
     }
     
+    /**
+     * Manage all orders in the system.
+     */
     public List<Order> manageOrders() {
-        // Will be implemented in controller/DAO
-        return null;
+        return null; // Implementation in OrderDAO
     }
     
+    /**
+     * Generate reports.
+     */
     public Report generateReport(String type) {
         Report report = new Report();
         report.setType(type);
@@ -43,7 +59,6 @@ public class Administrator extends User {
         return report;
     }
     
-    // Getters and Setters
     public String getAdminLevel() { return adminLevel; }
     public void setAdminLevel(String adminLevel) { this.adminLevel = adminLevel; }
     

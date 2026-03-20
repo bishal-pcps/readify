@@ -1,5 +1,10 @@
 package model;
 
+import java.math.BigDecimal;
+
+/**
+ * Represents an item in the shopping cart.
+ */
 public class CartItem {
     private Book book;
     private int quantity;
@@ -15,7 +20,13 @@ public class CartItem {
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
     
-    public double getSubtotal() {
-        return book.getPrice() * quantity;
+    /**
+     * Get the subtotal for this item (price * quantity).
+     */
+    public BigDecimal getSubtotal() {
+        if (book == null || book.getPrice() == null) {
+            return BigDecimal.ZERO;
+        }
+        return book.getPrice().multiply(new BigDecimal(quantity));
     }
 }
